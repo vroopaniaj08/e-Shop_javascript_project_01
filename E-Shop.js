@@ -12,6 +12,11 @@ function frontPageHeading(){
 
     var divlogoname = document.createElement("h1");
     divlogoname.innerHTML = "<span class = 'text-success'>e</span><span class = 'text-light'>-shop</span>";
+    divlogoname.setAttribute("style","cursor:pointer");
+    divlogoname.addEventListener("click",function(){
+      cleancart();
+      createCart(JSON.parse(localStorage.getItem("productList")));
+    })
     divlogo.appendChild(divlogoname);
     
     var divsearch = document.createElement("div");
@@ -42,11 +47,14 @@ function frontPageHeading(){
     headermain.appendChild(headerdiv);
     maindiv.appendChild(headermain);
 }
+function cleancart(){
+  document.querySelector("#cart-container").innerHTML = "";
+}
 function createCart(data){
     var mainDiv = document.querySelector(".main");
     var divContainer = document.createElement("div");
     divContainer.setAttribute("class","container");
-    
+    divContainer.setAttribute("id","cart-container");
     var rowDiv = document.createElement("div");
     rowDiv.setAttribute("class","row");
   
@@ -55,9 +63,35 @@ function createCart(data){
       cartContainer.setAttribute("class","col-md-4 p-3 mt-3");
       cartContainer.setAttribute("style","height:400px;");
       var cart = document.createElement("div");
-      cart.setAttribute("class","border border-dark");
+      cart.setAttribute("class","d-flex flex-column align-items-center border border-dark");
       cart.setAttribute("style","height:400px;");
+      
+      var imageblock = document.createElement("img");
+      imageblock.src = product.thumbnail;
+      imageblock.setAttribute("style","height:250px; width:100%;");
+      cart.appendChild(imageblock);
 
+      var titlediv = document.createElement("h6");
+      titlediv.innerText = product.title;
+      titlediv.setAttribute("class","mt-2")
+      cart.appendChild(titlediv);
+
+      var pricediv = document.createElement("h5");
+      pricediv.innerText = "Rs " + product.price;
+      cart.appendChild(pricediv);
+
+      var viewMoreDetails = document.createElement("a");
+      viewMoreDetails.setAttribute("style","display:block;");
+      viewMoreDetails.innerText = "view more";
+      viewMoreDetails.setAttribute("href","#");
+      viewMoreDetails.addEventListener("click",function(){
+        viewMoreDetailsNext();
+      });
+      cart.appendChild(viewMoreDetails);
+      var buttonblock = document.createElement("button");
+      buttonblock.setAttribute("class","btn btn-primary");
+      buttonblock.innerText = "Add to cart";
+      cart.appendChild(buttonblock);
       cartContainer.appendChild(cart);
       rowDiv.appendChild(cartContainer); 
     }
