@@ -34,11 +34,21 @@ function frontPageHeading(){
     var divsignup = document.createElement("span");
     divsignup.innerHTML = "Sign Up";
     divsignup.setAttribute("class","text-white");
+    divsignup.setAttribute("style","cursor:pointer");
+    divsignup.addEventListener("click",async function(){
+      await cleancart();
+      generateform("Sign Up");
+    })
     divsign.appendChild(divsignup);
 
     var divsignin = document.createElement("span");
     divsignin.innerHTML = "Sign In";
     divsignin.setAttribute("class","text-white ml-3");
+    divsignin.setAttribute("style","cursor:pointer");
+    divsignin.addEventListener("click",async function(){
+      await cleancart();
+      generateform("Sign In");
+    })
     divsign.appendChild(divsignin);
 
     headerdiv.appendChild(divlogo);
@@ -47,7 +57,84 @@ function frontPageHeading(){
     headermain.appendChild(headerdiv);
     maindiv.appendChild(headermain);
 }
-function cleancart(){
+function generateform(buttonText){
+  var cartContainer = document.getElementById("cart-container");
+  cartContainer.innerHTML = "";
+  var rowDiv = document.createElement("div");
+  rowDiv.setAttribute("class","row d-flex justify-content-center align-items-center");
+  var colDiv = document.createElement("div");
+  colDiv.setAttribute("class","col-md-6 border border-success");
+  colDiv.setAttribute("style","heigth:200px; margin-top:100px")
+
+  var emailblock = document.createElement("input");
+  emailblock.setAttribute("type","email");
+  emailblock.setAttribute("class","form-control mt-3");
+  emailblock.setAttribute("placeholder","Enter your email-id");
+  emailblock.setAttribute("id","email");
+  colDiv.appendChild(emailblock);
+
+
+  var passwordblock = document.createElement("input");
+  passwordblock.setAttribute("type","password");
+  passwordblock.setAttribute("class","form-control mt-3");
+  passwordblock.setAttribute("placeholder","Enter your password");
+  passwordblock.setAttribute("id","password");
+  colDiv.appendChild(passwordblock);
+
+  var buttonblock = document.createElement("button");
+  // buttonblock.setAttribute("type","submit");
+  buttonblock.innerText = buttonText;
+  buttonblock.setAttribute("class","form-control mt-3 mb-3 btn btn-success w-50");
+  buttonblock.addEventListener("click",async function(){
+    var emailValue = document.querySelector("#email").value;
+    var passwordValue = document.querySelector("#password").value;
+    if(buttonText == "Sign Up"){
+      await cleancart();
+      saveUser(emailValue,passwordValue);
+    }
+    else if(buttonText == "Sign In"){
+      var status = signin(emailValue,passwordValue);
+      if(status){
+        await cleancart();
+        document.querySelector(".main").innerHTML = "";
+        frontPageHeading();
+        createCart(JSON.parse(localStorage.getItem("productList")));
+        alert("sign successful......");
+      }
+      else {
+        alert("valid email id and password");
+      }
+    }
+  })
+  colDiv.appendChild(buttonblock);
+  rowDiv.appendChild(colDiv);
+  cartContainer.appendChild(rowDiv);
+}
+function signin(email,password){
+  var userList = localStorage.getItem("User-list");
+  userList = JSON.parse(userList);
+  let user = userList.find((user)=>{return (user.email == email && user.password == password)});
+  if(user){
+    sessionStorage.setItem("Login",true);
+    return true;
+  }
+  return false;
+}
+function saveUser(email,password){
+  var userList = localStorage.getItem("User-list"); // []
+  userList = JSON.parse(userList);
+  let user = userList.find((user)=>{return user.email == email});
+  if(user)
+   window.alert("Email id already exist");
+  else{
+     let user = {email,password};
+     userList.push(user);
+     localStorage.setItem("User-list",JSON.stringify(userList));
+     window.alert("Sign up success...");
+  }
+}
+async function cleancart(){
+
   document.querySelector("#cart-container").innerHTML = "";
 }
 function createCart(data){
@@ -77,7 +164,7 @@ function createCart(data){
       cart.appendChild(titlediv);
 
       var pricediv = document.createElement("h5");
-      pricediv.innerText = "Rs " + product.price;
+      pricediv.innerText = "$ " + product.price;
       cart.appendChild(pricediv);
 
       var viewMoreDetails = document.createElement("a");
