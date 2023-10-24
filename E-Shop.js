@@ -13,8 +13,10 @@ function frontPageHeading(){
     var divlogoname = document.createElement("h1");
     divlogoname.innerHTML = "<span class = 'text-success'>e</span><span class = 'text-light'>-shop</span>";
     divlogoname.setAttribute("style","cursor:pointer");
-    divlogoname.addEventListener("click",function(){
-      cleancart();
+    divlogoname.addEventListener("click",async function(){
+      await cleancart();
+      document.querySelector(".main").innerHTML = "";
+      frontPageHeading();
       createCart(JSON.parse(localStorage.getItem("productList")));
     })
     divlogo.appendChild(divlogoname);
@@ -30,7 +32,8 @@ function frontPageHeading(){
     
     var divsign = document.createElement("div");
     divsign.setAttribute("class","d-flex justify-content-center align-items-center col-md-3 border border-danger h-100");
-    
+  if (!sessionStorage.getItem("Login")){
+    // alert(sessionStorage.getItem("login"));
     var divsignup = document.createElement("span");
     divsignup.innerHTML = "Sign Up";
     divsignup.setAttribute("class","text-white");
@@ -50,12 +53,40 @@ function frontPageHeading(){
       generateform("Sign In");
     })
     divsign.appendChild(divsignin);
+  }
+  else{
+    var viewCart = document.createElement("span");
+    viewCart.innerText = "View Cart";
+    viewCart.setAttribute("class","text-white");
+    viewCart.setAttribute("style","cursor:pointer");
+    divsign.appendChild(viewCart);
+
+    viewCart.addEventListener("click",function(){
+      generateViewCart();
+    });
+    
+    var SignOut = document.createElement("span");
+    SignOut.innerText = "Sign Out";
+    SignOut.setAttribute("class","text-white ml-3");
+    SignOut.setAttribute("style","cursor:pointer");
+    divsign.appendChild(SignOut);
+
+    SignOut.addEventListener("click",function(){
+      sessionStorage.removeItem("Login");
+      document.querySelector(".main").innerHTML = "";
+      frontPageHeading();
+      createCart(JSON.parse(localStorage.getItem("productList")));
+    });
+  }
 
     headerdiv.appendChild(divlogo);
     headerdiv.appendChild(divsearch);
     headerdiv.appendChild(divsign);
     headermain.appendChild(headerdiv);
     maindiv.appendChild(headermain);
+}
+function generateViewCart(){
+
 }
 function generateform(buttonText){
   var cartContainer = document.getElementById("cart-container");
@@ -99,7 +130,7 @@ function generateform(buttonText){
         document.querySelector(".main").innerHTML = "";
         frontPageHeading();
         createCart(JSON.parse(localStorage.getItem("productList")));
-        alert("sign successful......");
+        alert("Sign In successful......");
       }
       else {
         alert("valid email id and password");
@@ -145,7 +176,7 @@ function createCart(data){
     var rowDiv = document.createElement("div");
     rowDiv.setAttribute("class","row");
   
-    for(var product of data){
+    for(let product of data){
       var cartContainer = document.createElement("div");
       cartContainer.setAttribute("class","col-md-4 p-3 mt-3");
       cartContainer.setAttribute("style","height:400px;");
@@ -172,7 +203,7 @@ function createCart(data){
       viewMoreDetails.innerText = "view more";
       viewMoreDetails.setAttribute("href","#");
       viewMoreDetails.addEventListener("click",function(){
-        viewMoreDetailsNext();
+        viewMoreDetailsNext(product);
       });
       cart.appendChild(viewMoreDetails);
       var buttonblock = document.createElement("button");
@@ -185,6 +216,32 @@ function createCart(data){
     divContainer.appendChild(rowDiv);
   
     mainDiv.appendChild(divContainer);
+  }
+  function viewMoreDetailsNext(product){
+    var cartContainer = document.querySelector("#cart-container");
+    cartContainer.innerHTML = "";
+
+    var rowDiv = document.createElement("div");
+    rowDiv.setAttribute("class","row mt-5");
+
+    var colDiv = document.createElement("div");
+    colDiv.setAttribute("class","col-md-6");
+    let imageblock = document.createElement("img");
+    imageblock.src = product.thumbnail;
+    imageblock.setAttribute("style","height:400px;width:100%");
+    var imageArray = document.createElement("div");
+    imageArray.setAttribute("class","d-flex justify-content-around")
+    for(var i of product.images){
+      let imageElement = document.createElement("img");
+      imageElement.src = i;
+      // imageElement.setAttribute("class","mt-1 mr-2")
+      imageElement.setAttribute("style","height:100px;width:18%");
+      imageArray.appendChild(imageElement);
+    }
+    colDiv.appendChild(imageblock);
+    colDiv.appendChild(imageArray);
+    rowDiv.appendChild(colDiv);
+    cartContainer.appendChild(rowDiv);
   }
   function setData(data){
      data = JSON.stringify(data);
