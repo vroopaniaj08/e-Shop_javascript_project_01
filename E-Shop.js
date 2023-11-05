@@ -91,6 +91,10 @@ function frontPageHeading(){
       buttonCheckOut.setAttribute("class","btn btn-warning");
       buttonCheckOut.innerText = "Checkout";
       buttonCheckOut.setAttribute("style","width:fit-content;");
+      buttonCheckOut.addEventListener("click",function(){
+        orderCheckOut(orderDiv);
+      })
+
       orderDiv.appendChild(checkout);
       orderDiv.appendChild(totalItems);
       orderDiv.appendChild(totalCost);
@@ -172,6 +176,84 @@ function frontPageHeading(){
     headerdiv.appendChild(divsign);
     headermain.appendChild(headerdiv);
     maindiv.appendChild(headermain);
+}
+function orderCheckOut(orderDiv){
+  let formElementDiv = document.createElement("div");
+  formElementDiv.setAttribute("class","col-md-12");
+
+  let inputDiv = document.createElement("div");
+  inputDiv.setAttribute("class","form-group");
+
+  let personNameInfo = document.createElement("input");
+  personNameInfo.setAttribute("class","form-control mt-3");
+  personNameInfo.setAttribute("placeholder","Enter your Name");
+  personNameInfo.addEventListener("keyup",function(){
+    let valueName = personNameInfo.value;
+    if(valueName.length != 0){
+      smallpersonName.classList.add("d-none");
+    }
+  })
+
+  inputDiv.appendChild(personNameInfo);
+  let smallpersonName = document.createElement("small");
+  smallpersonName.innerText = "Enter your name";
+  smallpersonName.setAttribute("class","text-danger d-none");
+  inputDiv.appendChild(smallpersonName);
+  
+  let personContactInfo = document.createElement("input");
+  personContactInfo.setAttribute("class","form-control mt-3");
+  personContactInfo.setAttribute("placeholder","Enter your Mobile no.");
+  personContactInfo.addEventListener("keyup",function(){
+    let valuecontact = personContactInfo.value;
+    if(valuecontact.length == 10 && isNaN(valuecontact) == false){
+      smallpersonContact.classList.add("d-none");
+    }
+  })
+
+  inputDiv.appendChild(personContactInfo);
+  let smallpersonContact = document.createElement("small");
+  smallpersonContact.innerText = "Please enter valid mobile number";
+  smallpersonContact.setAttribute("class","text-danger d-none");
+  inputDiv.appendChild(smallpersonContact);
+  
+  let personAddressInfo = document.createElement("input");
+  personAddressInfo.setAttribute("class","form-control mt-3");
+  personAddressInfo.setAttribute("placeholder","Enter your Address");
+  personAddressInfo.addEventListener("keyup",function(){
+    let valueAddress = personAddressInfo.value;
+    if(valueAddress.length != 0){
+      smallpersonAdress.classList.add("d-none");
+    }
+  })
+
+  inputDiv.appendChild(personAddressInfo);
+  let smallpersonAdress = document.createElement("small");
+  smallpersonAdress.innerText = "Enter your address";
+  smallpersonAdress.setAttribute("class","text-danger d-none");
+  inputDiv.appendChild(smallpersonAdress);
+
+  let orderButton = document.createElement("button");
+  orderButton.innerText = "Place Order";
+  orderButton.setAttribute("class","btn btn-outline-secondary mt-3 w-100");
+  orderButton.addEventListener("click",function(){
+    let personName = personNameInfo.value;
+    let personContact = personContactInfo.value;
+    let personAddress = personAddressInfo.value;
+
+    if(personName.length == 0){
+      smallpersonName.classList.remove("d-none");
+    }
+    if(personAddress.length == 0){
+      smallpersonAdress.classList.remove("d-none");
+    }
+    if(personContact.length != 10 || isNaN(personContact)){
+      smallpersonContact.classList.remove("d-none");
+    }
+  })
+  inputDiv.appendChild(orderButton);
+
+  formElementDiv.appendChild(inputDiv);
+  orderDiv.appendChild(formElementDiv);
 }
 function getBillAmount(){
   let cartList = JSON.parse(localStorage.getItem("Cart-list"));
