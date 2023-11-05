@@ -133,7 +133,7 @@ function frontPageHeading(){
               let index = cartList.findIndex((obj)=>obj.id == cartItem.id);
               let product = cartList[index];
               cartList.splice(index,1);
-              // product.qty = qtyInput.value;
+              product.qty = qtyInput.value;
               cartList.splice(index,0,product);
               localStorage.setItem("Cart-list",JSON.stringify(cartList));
               // console.log(getBillAmount());
@@ -177,7 +177,7 @@ function getBillAmount(){
   let cartList = JSON.parse(localStorage.getItem("Cart-list"));
   let totalBillAmountQty = 0;
   for (let item of cartList){
-    totalBillAmountQty = totalBillAmountQty + (item.qty + item.price);
+    totalBillAmountQty = totalBillAmountQty + (item.qty * item.price);
   }
   return totalBillAmountQty;
 }
