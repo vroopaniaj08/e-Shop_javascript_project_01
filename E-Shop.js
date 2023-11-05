@@ -1,4 +1,17 @@
-function frontPageHeading(){
+function searchBar(keywords){
+  let productList = localStorage.getItem("productList");
+  productList = JSON.parse(productList);
+
+  let searchResult = productList.filter((product)=>product.title.toLowerCase().includes(keywords.toLowerCase()));
+  if (keywords.length == 0){
+    searchResult = productList;
+  }
+  else{
+    document.querySelector("#cart-container").remove();
+    createCart(searchResult);
+  }
+}
+function frontPageHeading(searchValue){
     var maindiv = document.querySelector(".main");
     var headermain = document.createElement("div");
     headermain.setAttribute("class","container-fluid border border-danger")
@@ -28,6 +41,10 @@ function frontPageHeading(){
     divsearchbar.setAttribute("placeholder","Search");
     divsearchbar.setAttribute("style","height:50px");
     divsearchbar.setAttribute("class","col-md-8");
+    divsearchbar.value = searchValue ? searchValue : "";
+    divsearchbar.addEventListener("keyup",function(){
+      searchBar(divsearchbar.value);
+    })
     divsearch.appendChild(divsearchbar);
     
     var divsign = document.createElement("div");
