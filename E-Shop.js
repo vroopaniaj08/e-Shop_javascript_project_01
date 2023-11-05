@@ -14,14 +14,14 @@ function searchBar(keywords){
 function frontPageHeading(searchValue){
     var maindiv = document.querySelector(".main");
     var headermain = document.createElement("div");
-    headermain.setAttribute("class","container-fluid border border-danger")
+    headermain.setAttribute("class","container-fluid")
     
     var headerdiv = document.createElement("div");
     headerdiv.setAttribute("style","height:70px");
     headerdiv.setAttribute("class","bg-dark row");
     
     var divlogo = document.createElement("div");
-    divlogo.setAttribute("class","d-flex align-items-center col-md-3 border border-danger h-100");
+    divlogo.setAttribute("class","d-flex align-items-center col-md-3 h-100");
 
     var divlogoname = document.createElement("h1");
     divlogoname.innerHTML = "<span class = 'text-success'>e</span><span class = 'text-light'>-shop</span>";
@@ -35,7 +35,7 @@ function frontPageHeading(searchValue){
     divlogo.appendChild(divlogoname);
     
     var divsearch = document.createElement("div");
-    divsearch.setAttribute("class","d-flex justify-content-center align-items-center col-md-6 border border-danger h-100");
+    divsearch.setAttribute("class","d-flex justify-content-center align-items-center col-md-6 h-100");
     var divsearchbar = document.createElement("input");
     divsearchbar.setAttribute("type","text");
     divsearchbar.setAttribute("placeholder","Search");
@@ -48,7 +48,7 @@ function frontPageHeading(searchValue){
     divsearch.appendChild(divsearchbar);
     
     var divsign = document.createElement("div");
-    divsign.setAttribute("class","d-flex justify-content-center align-items-center col-md-3 border border-danger h-100");
+    divsign.setAttribute("class","d-flex justify-content-center align-items-center col-md-3 h-100");
   if (!sessionStorage.getItem("Login")){
     // alert(sessionStorage.getItem("login"));
     var divsignup = document.createElement("span");
@@ -397,7 +397,7 @@ function createCart(data){
       cartContainer.setAttribute("class","col-md-4 p-3 mt-3");
       cartContainer.setAttribute("style","height:400px;");
       var cart = document.createElement("div");
-      cart.setAttribute("class","d-flex flex-column align-items-center border border-dark");
+      cart.setAttribute("class","d-flex flex-column align-items-center border");
       cart.setAttribute("style","height:400px;");
       
       var imageblock = document.createElement("img");
