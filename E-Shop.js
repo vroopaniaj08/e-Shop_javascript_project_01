@@ -256,15 +256,39 @@ function orderCheckOut(orderDiv){
     let personName = personNameInfo.value;
     let personContact = personContactInfo.value;
     let personAddress = personAddressInfo.value;
+    if(personName.length == 0 || personAddress.length == 0 || personContact.length != 10 || isNaN(personContact)){
+      if(personName.length == 0){
+        smallpersonName.classList.remove("d-none");
+      }
+      if(personAddress.length == 0){
+        smallpersonAdress.classList.remove("d-none");
+      }
+      if(personContact.length != 10 || isNaN(personContact)){
+        smallpersonContact.classList.remove("d-none");
+      }
+    }
+    else{
+      let mainlast = document.querySelector(".main");
+      mainlast.innerHTML = "";
+      let completeOrderDiv = document.createElement("div");
+      completeOrderDiv.setAttribute("style","height:100vh;");
+      completeOrderDiv.setAttribute("class","d-flex flex-column justify-content-center align-items-center");
 
-    if(personName.length == 0){
-      smallpersonName.classList.remove("d-none");
-    }
-    if(personAddress.length == 0){
-      smallpersonAdress.classList.remove("d-none");
-    }
-    if(personContact.length != 10 || isNaN(personContact)){
-      smallpersonContact.classList.remove("d-none");
+      let headingOne = document.createElement("h1");
+      headingOne.innerText = "Thanks for shopping with us";
+      completeOrderDiv.appendChild(headingOne);
+
+      let continueShop = document.createElement("button");
+      continueShop.setAttribute("class","btn btn-outline-warning");
+      continueShop.innerText = "Continue Shopping";
+      continueShop.addEventListener("click",function(){
+        document.querySelector(".main").innerHTML = "";
+        frontPageHeading();
+        createCart(JSON.parse(localStorage.getItem("productList")));
+      })
+      completeOrderDiv.appendChild(continueShop);
+
+      mainlast.appendChild(completeOrderDiv);
     }
   })
   inputDiv.appendChild(orderButton);
