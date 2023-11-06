@@ -338,6 +338,9 @@ function generateform(buttonText){
     if(buttonText == "Sign Up"){
       await cleancart();
       saveUser(emailValue,passwordValue);
+      document.querySelector(".main").innerHTML = "";
+      frontPageHeading();
+      createCart(JSON.parse(localStorage.getItem("productList")));
     }
     else if(buttonText == "Sign In"){
       var status = signin(emailValue,passwordValue);
