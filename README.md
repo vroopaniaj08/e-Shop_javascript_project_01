@@ -2,4 +2,4 @@
 You can access it from link given below:<br/>
 ```https://e-shop-ar95.onrender.com/E-Shop.html```
 <br/>
-Developer : <h1>Apoorv jain</h1>
+Developer : <b>Apoorv jain</b>
